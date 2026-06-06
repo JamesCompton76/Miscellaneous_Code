@@ -14,4 +14,5 @@ PowerShell Scripts (Automation & Conversion)
    * **Execution Profiling:** Implements `System.Diagnostics.Stopwatch` to track and output precise telemetry on the batch run's total execution time.
    * **Execution Note:** To run this script and temporarily bypass local system execution constraints, use the following command:
      `powershell -ExecutionPolicy Bypass -File "H:\test\final_ps_convert.ps1"`
+   * **Further Note:** This relies on the local pc having the Word COM object available, can be updated to use LibreOffice if necessary but will require some changes
    </details>

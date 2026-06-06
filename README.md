@@ -1,12 +1,17 @@
-# Miscellaneous_Code
-Powershell, VBA etc.
+# PowerShell_Utilities
+PowerShell Scripts (Automation & Conversion)
 
-1.  final_ps_convert.ps1 - takes all the .doc and .docx files in a specified folder and converts them to pdf.  Added in code for timer, total time, files as they go etc.  Note, whether this is done in Powershell or Python it does rely on the Word .com object existing on the local pc, though this sometimes exists if there's a trial version etc. in the background.  Can be rewritten to use Libre if necessary with a slight change, according to Gemini that's along the lines of the below, though I haven't tested that.
+## Highlighted Utilities
 
-Define the path to LibreOffice
+1. **[final_ps_convert.ps1](./final_ps_convert.ps1)** - Headless COM-object automation script with strict memory management for batch converting Microsoft Word documents to PDF.
+   <details>
+   <summary><i>Click to expand architectural breakdown</i></summary>
 
-$soffice = "C:\Program Files\LibreOffice\program\soffice.exe"
+   An automation pipeline that orchestrates Microsoft Word via COM objects to perform headless batch conversions of `.doc` and `.docx` files to `.pdf`. It implements rigorous memory management and error handling to prevent resource leaks and orphaned background processes during high-volume conversions.
 
-Run the headless converter
-
-& $soffice --headless --convert-to pdf --outdir "C:\Your\Output\Folder" "C:\Your\Input\Folder\document.docx"
+   * **Headless COM Orchestration:** Instantiates the `Word.Application` COM object in the background (`$word.Visible = $false`) to process document conversions silently without disrupting the desktop environment.
+   * **Guaranteed Resource Cleanup:** Utilizes a strict `try/catch/finally` control flow alongside explicit Garbage Collection (`[System.GC]::Collect()`) and COM object release (`[System.Runtime.Interopservices.Marshal]::ReleaseComObject`). This ensures the Word background process terminates safely and memory is freed, regardless of individual file errors.
+   * **Execution Profiling:** Implements `System.Diagnostics.Stopwatch` to track and output precise telemetry on the batch run's total execution time.
+   * **Execution Note:** To run this script and temporarily bypass local system execution constraints, use the following command:
+     `powershell -ExecutionPolicy Bypass -File "H:\test\final_ps_convert.ps1"`
+   </details>

@@ -1,4 +1,4 @@
-# Miscellaneous_Code
+# Miscellaneous Code
 A collection of utility scripts and automation tools written in PowerShell, Batch (.bat), VBScript, and other languages.
 
 ## PowerShell Scripts

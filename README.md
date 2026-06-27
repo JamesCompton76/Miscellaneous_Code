@@ -1,4 +1,4 @@
-# Miscellaneous Code
+# Miscellaneous_Code
 A collection of utility scripts and automation tools written in PowerShell, Batch (.bat), VBScript, and other languages.
 
 ## PowerShell Scripts
@@ -20,7 +20,7 @@ A collection of utility scripts and automation tools written in PowerShell, Batc
 
 ## Stream Deck & Batch Scripts
 
-1. **[LaunchDev.bat](./LaunchDev.bat)** - One-click automation script to launch WSL2 Ubuntu, activate a Python virtual environment, and open VS Code via Elgato Stream Deck.
+1. **[ubuntu_full_dev_launch.bat](./ubuntu_full_dev_launch.bat)** - One-click automation script to launch WSL2 Ubuntu, activate a Python virtual environment, and open VS Code via Elgato Stream Deck.
    
    <details>
    <summary><i>Click to expand architectural breakdown</i></summary>
@@ -36,4 +36,34 @@ A collection of utility scripts and automation tools written in PowerShell, Batc
      "C:\Program Files\WSL\wsl.exe" --distribution-id {b3c166ea-97b5-46d8-ab70-769e8adb311f} --cd ~ -e bash -c "echo 'source ~/.bashrc; source .venv/bin/activate; code .' > /tmp/wsl_init.sh && bash --rcfile /tmp/wsl_init.sh -i"
      ```
    * **Further Note (VS Code Warnings):** You may occasionally see an orange warning (`!`) stating extensions want to relaunch the terminal. **You can safely ignore this.** It occurs because the automated terminal opens slightly faster than the Python extension loads in the background. Do not click "Relaunch terminal", as doing so forces a hard reset that may drop the `.venv`. If you accidentally drop the environment, simply close the terminal (Trash Can icon) and open a new one (`` Ctrl + Shift + ` ``) to properly reload into `.venv`.
+   </details>
+
+2. **[powershell_admin.bat](./powershell_admin.bat)** - Shortcut script to bypass standard elevation prompts and launch an administrative PowerShell session.
+   
+   <details>
+   <summary><i>Click to expand architectural breakdown</i></summary>
+
+   A lightweight wrapper script that invokes Windows User Account Control (UAC) to escalate a newly spawned PowerShell console directly into elevated Administrator mode.
+
+   * **Privilege Escalation:** Uses PowerShell's native object streaming to execute `Start-Process powershell -Verb RunAs`, signaling Windows to route the application process through the administrative access token pipeline.
+   * **Execution Note:** The script code for the `.bat` file is:
+     ```bat
+     powershell -Command "Start-Process powershell -Verb RunAs"
+     ```
+   </details>
+
+3. **[ubuntu_normal_launch.bat](./ubuntu_normal_launch.bat)** - Direct, lightweight launcher for the base Ubuntu WSL2 environment.
+   
+   <details>
+   <summary><i>Click to expand architectural breakdown</i></summary>
+
+   A streamlined batch script to launch a specific Ubuntu (WSL2) distribution directly into the home directory, bypassing the extended VS Code and virtual environment automation.
+
+   * **Targeted Execution:** Uses the `--distribution-id` flag to guarantee the exact WSL instance is launched, preventing Windows from accidentally spinning up a different default subsystem if multiple are installed.
+   * **Home Directory Mapping:** Uses `--cd ~` to ensure the terminal opens cleanly in the Linux home directory rather than inheriting the Windows system path (which often causes permission or pathing quirks).
+   * **Use Case:** Provides a clean, vanilla bash terminal for standard background tasks without spinning up the heavy IDE environment.
+   * **Execution Note:** The script code for the `.bat` file is:
+     ```bat
+     "C:\Program Files\WSL\wsl.exe" --distribution-id {b3c166ea-97b5-46d8-ab70-769e8adb311f} --cd ~
+     ```
    </details>
